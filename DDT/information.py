@@ -21,7 +21,7 @@ def validate_age():
         age = int(age_entry.get())
         if age < 12 or age > 100:
             messagebox.showerror("Invalid Age", 
-                                "Age must be between 1 and 120.")
+                                "Age must be between 12 and 80.")
         else:
             print("Age:", age)
     except ValueError:
