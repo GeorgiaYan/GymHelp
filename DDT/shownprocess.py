@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
+# List of available workouts
 workouts = [
     "Push-ups",
     "Squats",
@@ -14,7 +15,7 @@ workouts = [
     "Calf Raises",
     "Deadlifts",
     "RDL",
-    "Hip Thrusts"
+    "Hip Thrusts",
     "Bench Press",
     "Tricep Dips",
     "Push Ups",
@@ -24,6 +25,7 @@ workouts = [
     "Other"
 ]
 
+# Calories burned per minute for different workouts
 calorie_burn_per_minute = {
     "Push-ups": 7,
     "Squats": 5,
@@ -34,9 +36,11 @@ calorie_burn_per_minute = {
     "Other": 0
 }
 
+# Data dictionaries for workout progress and calorie tracking
 workout_progress = {}
 calorie_tracker = {}
 
+# Function to add a workout to progress and calorie tracker
 def add_workout():
     selected_workout = workout_listbox.get(tk.ACTIVE)
     reps = reps_entry.get()
@@ -64,23 +68,15 @@ def add_workout():
         workout_progress[selected_workout]["Reps"] = reps
         workout_progress[selected_workout]["Sets"] = sets
 
-    calorie_entry_val = calorie_entry.get()
-    try:
-        calorie_entry_val = int(calorie_entry_val)
-    except ValueError:
-        messagebox.showerror("Invalid Input", 
-                            "Calories burned must be an integer.")
-        return
-
-        
-    calorie_burn_per_set = calorie_burn_per_minute
-    [selected_workout] * int(reps)
-    calorie_burn_per_minute_total = calorie_burn_per_set * int(sets)
+    # Calculate calories burned per set and update calorie tracker
+    calorie_burn_per_set = calorie_burn_per_minute[selected_workout]
+    calorie_burn_per_minute_total = calorie_burn_per_set * sets
     calorie_tracker[selected_workout] = calorie_burn_per_minute_total
 
     messagebox.showinfo("Workout Added",
                     f"Added {selected_workout} to your workout progress!")
 
+# Function to display workout progress and calorie tracking
 def show_progress():
     progress_message = "Workout Progress:\n\n"
     if not workout_progress:
@@ -89,7 +85,7 @@ def show_progress():
         for workout, data in workout_progress.items():
             reps = data["Reps"]
             sets = data["Sets"]
-            progress_message += f"{workout}:{sets} set(s), {reps} rep(s)\n"
+            progress_message += f"{workout}: {sets} set(s), {reps} rep(s)\n"
 
     progress_message += "\nCalorie Tracker:\n\n"
     if not calorie_tracker:
@@ -100,20 +96,25 @@ def show_progress():
     
     messagebox.showinfo("Workout Progress", progress_message)
 
+# Create the main application window
 root = tk.Tk()
 root.title("Workout Tracker")
 
+# Create label to prompt user to select a workout
 workout_label = tk.Label(root, text="Select a Workout:", 
                         font=("Helvetica", 16))
 workout_label.pack(pady=20)
 
+# Create a listbox to display available workouts
 workout_listbox = tk.Listbox(root, font=("Helvetica", 14), 
                             selectmode=tk.SINGLE, width=30)
 workout_listbox.pack()
 
+# Insert each workout from the list into the listbox
 for workout in workouts:
     workout_listbox.insert(tk.END, workout)
 
+# Create labels and entry fields for reps, sets, custom workout, and calories
 reps_label = tk.Label(root, text="Reps:", font=("Helvetica", 14))
 reps_label.pack()
 
@@ -140,6 +141,7 @@ calorie_label.pack()
 calorie_entry = tk.Entry(root, font=("Helvetica", 14))
 calorie_entry.pack()
 
+# Create buttons to add a workout and show progress
 add_button = tk.Button(root, text="Add Workout", 
                     command=add_workout, font=("Helvetica", 14))
 add_button.pack(pady=10)
@@ -148,7 +150,9 @@ show_progress_button = tk.Button(root, text="Show Progress",
                                 command=show_progress, font=("Helvetica", 14))
 show_progress_button.pack(pady=10)
 
+# Start the GUI event loop
 root.mainloop()
+
 
 
 
